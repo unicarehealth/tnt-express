@@ -13,85 +13,43 @@ namespace TNTExpress\Model;
 
 class Parcel
 {
-    /**
-     * @var string
-     */
-    protected $consignmentNumber;
+    protected string $consignmentNumber = '';
 
     /**
-     * @var string
+     * @var numeric-string
      */
-    protected $accountNumber;
-    
-    /**
-     * @var string
-     */
-    protected $reference;
-    
-    /**
-     * @var Sender
-     */
-    protected $sender;
-    
-    /**
-     * @var Receiver
-     */
-    protected $receiver;
+    protected string $accountNumber = '0';
 
-    /**
-     * @var DropOffPoint
-     */
-    protected $dropOffPoint;
+    protected string $reference = '';
 
-    /**
-     * @var string
-     */
-    protected $service;
+    protected ?Sender $sender = null;
 
-    /**
-     * @var string
-     */
-    protected $weight;
+    protected ?Receiver $receiver = null;
 
-    /**
-     * @var Events
-     */
-    protected $events;
+    protected ?DropOffPoint $dropOffPoint = null;
 
-    /**
-     * @var string
-     */
-    protected $statusCode;
+    protected ?Service $service = null;
 
-    /**
-     * @var string
-     */
-    protected $longStatus;
+    protected string $weight = '';
 
-    /**
-     * @var string
-     */
-    protected $shortStatus;
+    protected ?Events $events = null;
 
-    /**
-     * @var string
-     */
-    protected $primaryPODUrl;
+    protected string $statusCode = '';
 
-    /**
-     * @var string
-     */
-    protected $secondaryPODUrl;
+    protected string $longStatus = '';
 
-    public function init()
+    protected string $shortStatus = '';
+
+    protected string $primaryPODUrl = '';
+
+    protected string $secondaryPODUrl = '';
+
+    public function init() : void
     {
-        $this->events->init();
+        $this->events?->init();
     }
 
-    /**
-     * @return string
-     */
-    public function getConsignmentNumber()
+    public function getConsignmentNumber() : string
     {
         return $this->consignmentNumber;
     }
@@ -99,33 +57,31 @@ class Parcel
     /**
      * @return $this
      */
-    public function setConsignmentNumber($consignmentNumber)
+    public function setConsignmentNumber(string $consignmentNumber) : static
     {
         $this->consignmentNumber = $consignmentNumber;
         return $this;
     }
-    
+
     /**
-     * @return string
+     * @return numeric-string
      */
-    public function getAccountNumber()
+    public function getAccountNumber() : string
     {
         return $this->accountNumber;
     }
 
     /**
+     * @param numeric-string $accountNumber
      * @return $this
      */
-    public function setAccountNumber($accountNumber)
+    public function setAccountNumber(string $accountNumber) : static
     {
         $this->accountNumber = $accountNumber;
         return $this;
     }
-    
-    /**
-     * @return string|null
-     */
-    public function getReference()
+
+    public function getReference() : string
     {
         return $this->reference;
     }
@@ -133,16 +89,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setReference($reference)
+    public function setReference(string $reference) : static
     {
         $this->reference = $reference;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSender()
+    public function getSender() : ?Sender
     {
         return $this->sender;
     }
@@ -150,16 +103,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setSender(Sender $sender)
+    public function setSender(?Sender $sender) : static
     {
         $this->sender = $sender;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getReceiver()
+    public function getReceiver() : ?Receiver
     {
         return $this->receiver;
     }
@@ -167,16 +117,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setReceiver(Receiver $receiver)
+    public function setReceiver(?Receiver $receiver) : static
     {
         $this->receiver = $receiver;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDropOffPoint()
+    public function getDropOffPoint() : ?DropOffPoint
     {
         return $this->dropOffPoint;
     }
@@ -184,16 +131,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setDropOffPoint($dropOffPoint)
+    public function setDropOffPoint(?DropOffPoint $dropOffPoint) : static
     {
         $this->dropOffPoint = $dropOffPoint;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getService()
+    public function getService() : ?Service
     {
         return $this->service;
     }
@@ -201,16 +145,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setService($service)
+    public function setService(?Service $service) : static
     {
         $this->service = $service;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getWeight()
+    public function getWeight() : string
     {
         return $this->weight;
     }
@@ -218,16 +159,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setWeight($weight)
+    public function setWeight(string $weight) : static
     {
         $this->weight = $weight;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEvents()
+    public function getEvents() : ?Events
     {
         return $this->events;
     }
@@ -235,16 +173,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setEvents($events)
+    public function setEvents(Events $events) : static
     {
         $this->events = $events;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatusCode()
+    public function getStatusCode() : string
     {
         return $this->statusCode;
     }
@@ -252,16 +187,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setStatusCode($statusCode)
+    public function setStatusCode(string $statusCode) : static
     {
         $this->statusCode = $statusCode;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortStatus()
+    public function getShortStatus() : string
     {
         return $this->shortStatus;
     }
@@ -269,33 +201,24 @@ class Parcel
     /**
      * @return $this
      */
-    public function setShortStatus($shortStatus)
+    public function setShortStatus(string $shortStatus) : static
     {
         $this->shortStatus = $shortStatus;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLongStatus()
+    public function getLongStatus() : string
     {
         return $this->longStatus;
     }
 
-    /**
-     * @return $this
-     */
-    public function setLongStatus($longStatus)
+    public function setLongStatus(string $longStatus) : static
     {
         $this->longStatus = $longStatus;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPrimaryPODUrl()
+    public function getPrimaryPODUrl() : string
     {
         return $this->primaryPODUrl;
     }
@@ -303,16 +226,13 @@ class Parcel
     /**
      * @return $this
      */
-    public function setPrimaryPODUrl($primaryPODUrl)
+    public function setPrimaryPODUrl(string $primaryPODUrl) : static
     {
         $this->primaryPODUrl = $primaryPODUrl;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecondaryPODUrl()
+    public function getSecondaryPODUrl() : string
     {
         return $this->secondaryPODUrl;
     }
@@ -320,7 +240,7 @@ class Parcel
     /**
      * @return $this
      */
-    public function setSecondaryPODUrl($secondaryPODUrl)
+    public function setSecondaryPODUrl(string $secondaryPODUrl) : static
     {
         $this->secondaryPODUrl = $secondaryPODUrl;
         return $this;

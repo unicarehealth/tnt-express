@@ -15,224 +15,165 @@ class Receiver extends Address
 {
     /**
      * Company name
-     * @var string
      */
-    protected $name;
+    protected string $name = '';
 
-    /**
-     * @var string
-     */
-    protected $phoneNumber;
+    protected string $phoneNumber = '';
 
-    /**
-     * @var string
-     */
-    protected $contactFirstName;
+    protected string $contactFirstName = '';
 
-    /**
-     * @var string
-     */
-    protected $contactLastName;
+    protected string $contactLastName = '';
 
-    /**
-     * @var string
-     */
-    protected $emailAddress;
+    protected string $emailAddress = '';
 
-    /**
-     * @var string
-     */
-    protected $faxNumber;
+    protected string $faxNumber = '';
 
-    /**
-     * @var string
-     */
-    protected $type = 'ENTERPRISE';
+    protected string $type = 'ENTERPRISE';
 
     /**
      * Only if type == DEPOT, then the PEX code
-     * @var string
      */
-    protected $typeId;
+    protected string $typeId = '';
+
+    protected string $instructions = '';
+
+    protected string $accessCode = '';
+
+    protected string $floorNumber = '';
+
+    protected string $buildingId = '';
+
+    protected string $sendNotification = '';
 
     /**
-     * @var string
+     * @return string[]
      */
-    protected $instructions;
-
-    /**
-     * @var string
-     */
-    protected $accessCode;
-
-    /**
-     * @var string
-     */
-    protected $floorNumber;
-
-    /**
-     * @var string
-     */
-    protected $buildingId;
-
-    /**
-     * @var string
-     */
-    protected $sendNotification;
-
-    static public function getTypes()
+    static public function getTypes() : array
     {
-        return array('ENTERPRISE', 'DEPOT', 'DROPOFFPOINT', 'INDIVIDUAL');
+        return ['ENTERPRISE', 'DEPOT', 'DROPOFFPOINT', 'INDIVIDUAL'];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setName($name)
+    public function setName(string $name) : static
     {
         $this->name = $name;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPhoneNumber()
+    public function getPhoneNumber() : string
     {
         return $this->phoneNumber;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber(string $phoneNumber) : static
     {
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContactFirstName()
+    public function getContactFirstName() : string
     {
         return $this->contactFirstName;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setContactFirstName($contactFirstName)
+    public function setContactFirstName(string $contactFirstName) : static
     {
         $this->contactFirstName = $contactFirstName;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContactLastName()
+    public function getContactLastName() : string
     {
         return $this->contactLastName;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setContactLastName($contactLastName)
+    public function setContactLastName(string $contactLastName) : static
     {
         $this->contactLastName = $contactLastName;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getEmailAddress()
+    public function getEmailAddress() : string
     {
         return $this->emailAddress;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setEmailAddress($emailAddress)
+    public function setEmailAddress(string $emailAddress) : static
     {
         $this->emailAddress = $emailAddress;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFaxNumber()
+    public function getFaxNumber() : string
     {
         return $this->faxNumber;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setFaxNumber($faxNumber)
+    public function setFaxNumber(string $faxNumber) : static
     {
         $this->faxNumber = $faxNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getType()
+    public function getType() : string
     {
         return $this->type;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setType($type)
+    public function setType(string $type) : static
     {
         $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTypeId()
+    public function getTypeId() : string
     {
         return $this->typeId;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setTypeId($typeId)
+    public function setTypeId(string $typeId) : static
     {
         $this->typeId = $typeId;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getInstructions()
+    public function getInstructions() : string
     {
         return $this->instructions;
     }
 
     /**
-     * @return Sender
+     * @return $this
      */
-    public function setInstructions($instructions)
+    public function setInstructions(string $instructions) : static
     {
         $this->instructions = $instructions;
         return $this;

@@ -21,10 +21,12 @@ $soapClient = $builder->createClient(true);
 
 $TNTClient = new TNTClient($soapClient, new ExceptionManager());
 
-try {
+try
+{
     $city = $TNTClient->getCitiesGuide('76130');
-
     var_dump($city);
-} catch (ClientException $e) {
+}
+catch (ClientException $e)
+{
     var_dump($e->getMessage());
 }

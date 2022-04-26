@@ -13,93 +13,69 @@ namespace TNTExpress\Model;
 
 class ParcelResponse
 {
-    /**
-     * @var string
-     */
-    protected $sequenceNumber;
+    protected string $sequenceNumber = '';
 
-    /**
-     * @var string
-     */
-    protected $parcelNumber;
+    protected string $parcelNumber = '';
 
-    /**
-     * @var string
-     */
-    protected $trackingURL;
+    protected string $trackingURL = '';
 
-    /**
-     * @var string
-     */
-    protected $stickerNumber;
+    protected string $stickerNumber = '';
 
-    public function init()
+    public function init() : void
     {
     }
 
-    /**
-     * @return string
-     */
-    public function getParcelNumber()
+    public function getParcelNumber() : string
     {
         return $this->parcelNumber;
     }
 
     /**
-     * @return ParcelResponse
+     * @return $this
      */
-    public function setParcelNumber($parcelNumber)
+    public function setParcelNumber(string $parcelNumber) : static
     {
         $this->parcelNumber = $parcelNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getTrackingURL()
+    public function getTrackingURL() : string
     {
         return $this->trackingURL;
     }
 
     /**
-     * @return ParcelResponse
+     * @return $this
      */
-    public function setTrackingURL($trackingURL)
+    public function setTrackingURL(string $trackingURL) : static
     {
         $this->trackingURL = $trackingURL;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getStickerNumber()
+    public function getStickerNumber() : string
     {
         return $this->stickerNumber;
     }
 
     /**
-     * @return ParcelResponse
+     * @return $this
      */
-    public function setStickerNumber($stickerNumber)
+    public function setStickerNumber(string $stickerNumber) : static
     {
         $this->stickerNumber = $stickerNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSequenceNumber()
+    public function getSequenceNumber() : string
     {
         return $this->sequenceNumber;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setSequenceNumber($sequenceNumber)
+    public function setSequenceNumber(string $sequenceNumber) : static
     {
         $this->sequenceNumber = $sequenceNumber;
         return $this;

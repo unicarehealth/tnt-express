@@ -11,92 +11,70 @@
 
 namespace TNTExpress\Client;
 
+use SoapClient;
+use SoapHeader;
+use SoapVar;
+
 class SoapClientBuilder
 {
-    const TEST_LOGIN    = 'webservices@tnt.fr';
-    const TEST_PASSWORD = 'test';
+    public final const SBX_LOGIN_NAME    = 'webservices@tnt.fr';
+    public final const SBX_LOGIN_PASSWORD = 'test';
+    public final const PRD_WSDL_URL = 'http://www.tnt.fr/service/?wsdl';
 
-    const WSDL = 'http://www.tnt.fr/service/?wsdl';
+    protected string $login = '';
 
-    /**
-     * @var string
-     */
-    protected $login;
+    protected string $password = '';
 
-    /**
-     * @var string
-     */
-    protected $password;
+    protected string $wsdlUrl = '';
 
     /**
-     * @var string
+     * @var array<string, class-string>
      */
-    protected $wsdl;
+    protected $classmap = [
+        'Address'             => \TNTExpress\Model\Address::class,
+        'city'                => \TNTExpress\Model\City::class,
+        'dropOffPoint'        => \TNTExpress\Model\DropOffPoint::class,
+        'fullAddress'         => \TNTExpress\Model\FullAddress::class,
+        'fullAddressPlusInfo' => \TNTExpress\Model\FullAddressPlusInfo::class,
+        'parcelRequest'       => \TNTExpress\Model\ParcelRequest::class,
+        'receiver'            => \TNTExpress\Model\Receiver::class,
+        'sender'              => \TNTExpress\Model\Sender::class,
+        'pickUpRequest'       => \TNTExpress\Model\PickUpRequest::class,
+        'expeditionResponse'  => \TNTExpress\Model\Expedition::class,
+        'service'             => \TNTExpress\Model\Service::class,
+        'parcelResponse'      => \TNTExpress\Model\ParcelResponse::class,
+        'parcel'              => \TNTExpress\Model\Parcel::class,
+        'event'               => \TNTExpress\Model\Events::class,
+        'expeditionCreationParameter' => \TNTExpress\Model\ExpeditionRequest::class,
+    ];
 
     /**
-     * @var array
+     * @param array<string, class-string> $classmap
      */
-    protected $classmap = array(
-        'Address'             => '\TNTExpress\Model\Address',
-        'city'                => '\TNTExpress\Model\City',
-        'dropOffPoint'        => '\TNTExpress\Model\DropOffPoint',
-        'fullAddress'         => '\TNTExpress\Model\FullAddress',
-        'fullAddressPlusInfo' => '\TNTExpress\Model\FullAddressPlusInfo',
-        'parcelRequest'       => '\TNTExpress\Model\ParcelRequest',
-        'receiver'            => '\TNTExpress\Model\Receiver',
-        'sender'              => '\TNTExpress\Model\Sender',
-        'pickUpRequest'       => '\TNTExpress\Model\PickUpRequest',
-        'expeditionResponse'  => '\TNTExpress\Model\Expedition',
-        'service'             => '\TNTExpress\Model\Service',
-        'parcelResponse'      => '\TNTExpress\Model\ParcelResponse',
-        'parcel'              => '\TNTExpress\Model\Parcel',
-        'event'               => '\TNTExpress\Model\Events',
-        'expeditionCreationParameter' => '\TNTExpress\Model\ExpeditionRequest',
-    );
-
-    public function __construct($login = null, $password = null, array $classmap = null, $wsdl = null)
+    public function __construct(string $login = '', string $password = '', array $classmap = [], string $wsdlUrl = '')
     {
         $this->login    = $login;
         $this->password = $password;
-
-        if (null !== $classmap) {
-            $this->classmap = array_merge($this->classmap, $classmap);
-        }
-
-        $this->wsdl = $wsdl ?: self::WSDL;
+        $this->classmap = array_merge($this->classmap, $classmap);
+        $this->wsdlUrl = $wsdlUrl !== '' ? $wsdlUrl : self::PRD_WSDL_URL;
     }
 
     /**
-     * Return a new instance of SoapClient
-     *
-     * @param bool $sandBox
-     *
-     * @return \SoapClient
+     * Returns a new SoapClient.
      */
-    public function createClient($sandBox = false)
+    public function createClient(bool $useSandbox = false) : SoapClient
     {
-        $client = new \SoapClient($this->wsdl, array(
-            'soap_version' => SOAP_1_1,
-            'classmap'     => $this->classmap
-        ));
-
-        $login    = $sandBox ? self::TEST_LOGIN    : $this->login;
-        $password = $sandBox ? self::TEST_PASSWORD : $this->password;
-
+        $client = new SoapClient($this->wsdlUrl, ['soap_version' => SOAP_1_1, 'classmap' => $this->classmap]);
+        $login    = $useSandbox ? self::SBX_LOGIN_NAME    : $this->login;
+        $password = $useSandbox ? self::SBX_LOGIN_PASSWORD : $this->password;
         $client->__setSOAPHeaders($this->getSecurityHeader($login, $password));
-
         return $client;
     }
 
     /**
-     * Return an instance of SoapHeader for WS Security
-     *
-     * @param string $login
-     * @param string $password
-     *
-     * @return \SoapHeader
+     * Return an instance of SoapHeader for WS Security.
      */
-    public function getSecurityHeader($login, $password)
+    public function getSecurityHeader(string $login, string $password) : SoapHeader
     {
         $authHeader = sprintf(
             $this->getSecurityHeaderTemplate(),
@@ -104,19 +82,17 @@ class SoapClientBuilder
             htmlspecialchars($password)
         );
 
-        return new \SoapHeader(
+        return new SoapHeader(
             'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd',
             'Security',
-            new \SoapVar($authHeader, XSD_ANYXML)
+            new SoapVar($authHeader, XSD_ANYXML)
         );
     }
 
     /**
-     * Return template for WS Security header
-     *
-     * @return string
+     * Return template for WS Security header.
      */
-    protected function getSecurityHeaderTemplate()
+    protected function getSecurityHeaderTemplate() : string
     {
         return
             '<wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">

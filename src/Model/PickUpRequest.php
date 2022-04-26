@@ -17,200 +17,161 @@ class PickUpRequest
      * Mandatory
      * @var string Format HH:MM
      */
-    protected $closingTime;
-    
-    /**
-     * @var string
-     */
-    protected $emailAddress;
+    protected string $closingTime = '';
+
+    protected string $emailAddress = '';
 
     /**
      * First name of the contact
-     * @var string
      */
-    protected $firstName;
+    protected string $firstName = '';
 
-    /**
-     * @var string
-     */
-    protected $instructions;
+    protected string $instructions = '';
 
     /**
      * Last name of the contact
-     * @var string
      */
-    protected $lastName;
+    protected string $lastName = '';
 
     /**
      * Type of media for notifications, only EMAIL accepted
-     * @var string
      */
-    protected $media = 'EMAIL';
+    protected string $media = 'EMAIL';
 
     /**
      * String version for boolean: do we notify or not
-     * @var string
      */
-    protected $notifySuccess;
+    protected string $notifySuccess = '';
 
     /**
      * Phone number of the contact - mandatory
-     * @var string
      */
-    protected $phoneNumber;
+    protected string $phoneNumber = '';
 
     /**
      * Service of the contact
-     * @var string
      */
-    protected $service;
+    protected ?Service $service = null;
 
-    public function __construct($phoneNumber = null, $emailAddress = null, $closingTime = null)
+    public function __construct(string $phoneNumber = '', string $emailAddress = '', string $closingTime = '')
     {
         $this->setPhoneNumber($phoneNumber);
         $this->setEmailAddress($emailAddress);
         $this->setClosingTime($closingTime);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getClosingTime()
+    public function getClosingTime() : string
     {
         return $this->closingTime;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setClosingTime($closingTime)
+    public function setClosingTime(string $closingTime) : static
     {
         $this->closingTime = $closingTime;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getEmailAddress()
+    public function getEmailAddress() : string
     {
         return $this->emailAddress;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setEmailAddress($emailAddress)
+    public function setEmailAddress(string $emailAddress) : static
     {
         $this->emailAddress = $emailAddress;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getFirstName()
+    public function getFirstName() : string
     {
         return $this->firstName;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setFirstName($firstName)
+    public function setFirstName(string $firstName) : static
     {
         $this->firstName = $firstName;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getInstructions()
+    public function getInstructions() : string
     {
         return $this->instructions;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setInstructions($instructions)
+    public function setInstructions(string $instructions) : static
     {
         $this->instructions = $instructions;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getLastName()
+    public function getLastName() : string
     {
         return $this->lastName;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setLastName($lastName)
+    public function setLastName(string $lastName) : static
     {
         $this->lastName = $lastName;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMedia()
+    public function getMedia() : string
     {
         return $this->media;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getNotifySuccess()
+    public function getNotifySuccess() : string
     {
         return $this->notifySuccess;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setNotifySuccess($notifySuccess)
+    public function setNotifySuccess(string $notifySuccess) : static
     {
         $this->notifySuccess = $notifySuccess;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPhoneNumber()
+    public function getPhoneNumber() : string
     {
         return $this->phoneNumber;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setPhoneNumber($phoneNumber)
+    public function setPhoneNumber(string $phoneNumber) : static
     {
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getService()
+    public function getService() : ?Service
     {
         return $this->service;
     }
 
     /**
-     * @return PickUpRequest
+     * @return $this
      */
-    public function setService($service)
+    public function setService(?Service $service) : static
     {
         $this->service = $service;
         return $this;

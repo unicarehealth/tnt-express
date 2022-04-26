@@ -13,134 +13,107 @@ namespace TNTExpress\Model;
 
 class ParcelRequest
 {
-    /**
-     * @var string
-     */
-    public $comment;
+    public string $comment = '';
+
+    public string $customerReference = '';
+
+    public string $insuranceAmount = '';
+
+    public string $priorityGuarantee = '';
+
+    public string $sequenceNumber = '';
+
+    public string $weight = '';
 
     /**
-     * @var string
+     * @return string[]
      */
-    public $customerReference;
-
-    /**
-     * @var string
-     */
-    public $insuranceAmount;
-
-    /**
-     * @var string
-     */
-    public $priorityGuarantee;
-
-    /**
-     * @var string
-     */
-    public $sequenceNumber;
-
-    /**
-     * @var string
-     */
-    public $weight;
-
-    static public function getPriorityGuarantees()
+    static public function getPriorityGuarantees() : array
     {
-        return array('', 'PTY', 'GUE');
+        return ['', 'PTY', 'GUE'];
     }
 
-    /**
-     * @return string|null
-     */
-    public function getComment()
+    public function getComment() : string
     {
         return $this->comment;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setComment($comment)
+    public function setComment(string $comment) : static
     {
         $this->comment = $comment;
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCustomerReference()
+    public function getCustomerReference() : string
     {
         return $this->customerReference;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setCustomerReference($customerReference)
+    public function setCustomerReference(string $customerReference) : static
     {
         $this->customerReference = $customerReference;
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getInsuranceAmount()
+    public function getInsuranceAmount() : string
     {
         return $this->insuranceAmount;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setInsuranceAmount($insuranceAmount)
+    public function setInsuranceAmount(string $insuranceAmount) : static
     {
         $this->insuranceAmount = $insuranceAmount;
+        return $this;
     }
 
-    /**
-     * @return TNTEnumOption|null
-     */
-    public function getPriorityGuarantee()
+    public function getPriorityGuarantee() : string
     {
         return $this->priorityGuarantee;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setPriorityGuarantee($priorityGuarantee)
+    public function setPriorityGuarantee(string $priorityGuarantee) : static
     {
         $this->priorityGuarantee = $priorityGuarantee;
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getSequenceNumber()
+    public function getSequenceNumber() : string
     {
         return $this->sequenceNumber;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setSequenceNumber($sequenceNumber)
+    public function setSequenceNumber(string $sequenceNumber) : static
     {
         $this->sequenceNumber = $sequenceNumber;
+        return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getWeight()
+    public function getWeight() : string
     {
         return $this->weight;
     }
 
     /**
-     * @return ParcelRequest
+     * @return $this
      */
-    public function setWeight($weight)
+    public function setWeight(string $weight) : static
     {
         $this->weight = $weight;
+        return $this;
     }
 }

@@ -13,32 +13,20 @@ namespace TNTExpress\Model;
 
 class City
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name = '';
 
-    /**
-     * @var string
-     */
-    protected $zipCode;
+    protected string $zipCode = '';
 
-    public function init()
+    public function init() : void
     {
     }
 
-    /**
-     * @return string|null
-     */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getZipCode()
+    public function getZipCode() : string
     {
         return $this->zipCode;
     }

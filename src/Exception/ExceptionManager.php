@@ -11,19 +11,26 @@
 
 namespace TNTExpress\Exception;
 
+use ReflectionClass;
+use SoapFault;
+use Exception;
+
 class ExceptionManager implements ExceptionManagerInterface
 {
-    protected $classes = array();
+    /** @var class-string<Exception>[] */
+    protected $classes = [];
 
-    protected $defaultClasses = array(
-        'InvalidPairZipcodeCityException',
-        'InvalidZipcodeException',
-        'MissingFieldException'
-    );
+    /** @var class-string<Exception>[] */
+    protected $defaultClasses = [
+        InvalidPairZipcodeCityException::class,
+        InvalidZipcodeException::class,
+        MissingFieldException::class
+    ];
 
-    public function __construct($default = true)
+    public function __construct(bool $default = true)
     {
-        if ($default) {
+        if ($default)
+        {
             $this->addDefaultClasses();
         }
     }
@@ -31,7 +38,7 @@ class ExceptionManager implements ExceptionManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function addClass($class)
+    public function addClass(string $class) : void
     {
         $this->classes[] = $class;
     }
@@ -39,29 +46,32 @@ class ExceptionManager implements ExceptionManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getClasses()
+    public function getClasses() : array
     {
         return $this->classes;
     }
 
-    public function addDefaultClasses()
+    public function addDefaultClasses() : void
     {
         foreach ($this->defaultClasses as $class) {
-            $this->addClass('TNTExpress\\Exception\\'.$class);
+            $this->addClass($class);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handle(\SoapFault $e)
+    public function handle(SoapFault $e) : void
     {
         $message = trim($e->getMessage());
 
-        foreach ($this->classes as $class) {
-            $results = array();
-            if (preg_match('`'.str_replace('%s', '(.*?)', $class::MESSAGE).'`is', $message, $results)) {
-                $rc = new \ReflectionClass($class);
+        foreach ($this->classes as $class)
+        {
+            $results = [];
+            if (preg_match('`' . str_replace('%s', '(.*?)', $class::MESSAGE) . '`is', $message, $results))
+            {
+
+                $rc = new ReflectionClass($class);
                 unset($results[0]);
                 throw $rc->newInstanceArgs($results);
             }

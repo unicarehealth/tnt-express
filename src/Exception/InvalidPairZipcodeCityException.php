@@ -15,7 +15,7 @@ class InvalidPairZipcodeCityException extends ClientException
 {
     const MESSAGE = "(zip code / city) pair '%s / %s' doesn't exist.";
 
-    public function __construct($zipCode, $city)
+    public function __construct(string $zipCode, string $city = '')
     {
         parent::__construct(sprintf(self::MESSAGE, $zipCode, $city));
     }

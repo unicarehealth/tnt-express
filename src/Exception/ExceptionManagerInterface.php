@@ -11,21 +11,23 @@
 
 namespace TNTExpress\Exception;
 
+use Exception;
+
 interface ExceptionManagerInterface
 {
     /**
      * Add an exception class
      *
-     * @param  string $class
+     * @param class-string<Exception> $class
      */
-    public function addClass($class);
+    public function addClass(string $class) : void;
 
     /**
      * Get registered exception classes
      *
-     * @return string[]
+     * @return class-string<Exception>[]
      */
-    public function getClasses();
+    public function getClasses() : array;
 
     /**
      * Try to transform a SoapFault exception to a custom one, or throw it again
@@ -35,5 +37,5 @@ interface ExceptionManagerInterface
      * @throws \SoapFault
      * @throws ClientException
      */
-    public function handle(\SoapFault $e);
+    public function handle(\SoapFault $e) : void;
 }

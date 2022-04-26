@@ -18,6 +18,8 @@ use TNTExpress\Model\Receiver;
 use TNTExpress\Model\ParcelRequest;
 use TNTExpress\Model\PickUpRequest;
 
+use DateTime;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $builder = new SoapClientBuilder('login', 'password');
@@ -54,45 +56,56 @@ $parcelRequest2->setWeight('3');
 $pickupRequest = new PickUpRequest('0633760912', 'logistics@my-company.com', '18:00');
 
 $expeditionRequest = new \TNTExpress\Model\ExpeditionRequest();
-$expeditionRequest->setShippingDate(new \Datetime('2015-01-12'));
+$expeditionRequest->setShippingDate(new Datetime('2015-01-12'));
 $expeditionRequest->setAccountNumber('06324676');
 $expeditionRequest->setSender($sender);
 $expeditionRequest->setReceiver($receiver);
 
-foreach (array($sender, $receiver) as $address) {
-    if (!$TNTClient->checkZipcodeCityMatch($address->getZipCode(), $address->getCity())) {
+foreach ([$sender, $receiver] as $address)
+{
+    if (!$TNTClient->checkZipcodeCityMatch($address->getZipCode(), $address->getCity()))
+    {
         exit(sprintf('Error: Zip code "%s" does not match city "%s".', $address->getZipCode(), $address->getCity()));
     }
 }
 
-$filter = function($service) {
-    if ($service->getServiceCode(1) != 'J') { // We keep only the Express service
+$filter = function($service)
+{
+    if ($service->getServiceCode(1) != 'J')
+    { // We keep only the Express service
         return false;
     }
-    if ($service->isSaturdayDelivery() != true) { // And with a Saturday delivery
+    if ($service->isSaturdayDelivery() != true)
+    { // And with a Saturday delivery
         return false;
     }
     return true;
 };
 
-try {
+try
+{
     $feasibility = $TNTClient->getFeasibility($expeditionRequest, $filter);
 
     var_dump($feasibility);
-} catch (\SoapFault $e) {
+}
+catch (\SoapFault $e)
+{
     var_dump($e->getMessage());
 }
 
 $expeditionRequest->setQuantity(2);
-$expeditionRequest->setParcelsRequest(array($parcelRequest1, $parcelRequest2));
+$expeditionRequest->setParcelRequests([$parcelRequest1, $parcelRequest2]);
 $expeditionRequest->setServiceCode($feasibility[0]->getServiceCode());
 $expeditionRequest->setPickupRequest($pickupRequest);
 
-try {
+try
+{
     $result = $TNTClient->createExpedition($expeditionRequest);
 
     file_put_contents('test.pdf', $result->getPDFLabels());
     var_dump($result);
-} catch (ClientException $e) {
+}
+catch (ClientException $e)
+{
     var_dump($e->getMessage());
 }

@@ -13,9 +13,9 @@ namespace TNTExpress\Exception;
 
 class InvalidZipcodeException extends ClientException
 {
-    const MESSAGE = "The field '%s' is not a valid french zip code.";
+    public final const MESSAGE = "The field '%s' is not a valid french zip code.";
 
-    public function __construct($zipCode)
+    public function __construct(string $zipCode)
     {
         parent::__construct(sprintf(self::MESSAGE, $zipCode));
     }

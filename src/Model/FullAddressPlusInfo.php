@@ -13,47 +13,35 @@ namespace TNTExpress\Model;
 
 class FullAddressPlusInfo extends FullAddress
 {
-    /**
-     * @var string
-     */
-    protected $geolocalisationUrl;
+    protected string $geolocalisationUrl = '';
+
+    protected string $message = '';
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $message;
+    protected array $openingHours = [];
 
-    /**
-     * @var array
-     */
-    protected $openingHours;
-
-    public function init()
+    public function init() : void
     {
         parent::init();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getGeolocalisationUrl()
+    public function getGeolocalisationUrl() : string
     {
         return $this->geolocalisationUrl;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMessage()
+    public function getMessage() : string
     {
         return $this->message;
     }
 
     /**
-     * @return array
+     * @return string[]
      */
-    public function getOpeningHours()
+    public function getOpeningHours() : array
     {
-        return json_decode(json_encode($this->openingHours), true);
+        return json_decode((string)json_encode($this->openingHours), true);
     }
 }

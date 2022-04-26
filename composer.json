@@ -13,12 +13,13 @@
         }
     ],
     "require": {
-        "php":             ">=5.3.0",
+        "php":             ">=8.1.0",
         "ext-soap":        "*",
-        "doctrine/common": "~2.2"
+        "doctrine/common": "~3.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpspec/phpspec": "~7.2",
+        "phpstan/phpstan": "^1.5"
     },
     "autoload": {
         "psr-4": { "TNTExpress\\": "src/" }
@@ -28,5 +29,11 @@
     },
     "config": {
         "bin-dir": "bin"
+    },
+    "scripts": {
+        "phpstan": ["Composer\\Config::disableProcessTimeout", "phpstan analyse src -c phpstan.neon --no-progress -vvv --memory-limit=4G"],
+        "phpstanclear": ["Composer\\Config::disableProcessTimeout", "phpstan clear-result-cache"],
+        "phpunit": ["Composer\\Config::disableProcessTimeout", "phpunit -c phpunit.xml.dist"],
+        "up": ["Composer\\Config::disableProcessTimeout", "composer update --ignore-platform-reqs"]
     }
 }

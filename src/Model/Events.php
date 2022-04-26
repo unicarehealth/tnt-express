@@ -11,84 +11,59 @@
 
 namespace TNTExpress\Model;
 
+use Datetime;
+
 class Events
 {
-    static public $sequence = array(
+    /** @var string[] */
+    static public $sequence = [
         'requestDate',
         'processDate',
         'arrivalDate',
         'deliveryDepartureDate',
         'deliveryDate',
-    );
+    ];
 
-    /**
-     * @var \Datetime
-     */
-    protected $requestDate;
+    protected ?Datetime $requestDate = null;
 
-    /**
-     * @var \Datetime
-     */
-    protected $processDate;
-    
-    /**
-     * @var string
-     */
-    protected $processCenter;
-    
-    /**
-     * @var string
-     */
-    protected $processCenterPEX;
-    
-    /**
-     * @var \Datetime
-     */
-    protected $arrivalDate;
+    protected ?Datetime $processDate = null;
 
-    /**
-     * @var string
-     */
-    protected $arrivalCenter;
+    protected string $processCenter = '';
 
-    /**
-     * @var string
-     */
-    protected $arrivalCenterPEX;
+    protected string $processCenterPEX = '';
 
-    /**
-     * @var \Datetime
-     */
-    protected $deliveryDepartureDate;
+    protected ?DateTime $arrivalDate = null;
 
-    /**
-     * @var string
-     */
-    protected $deliveryDepartureCenter;
+    protected string $arrivalCenter = '';
 
-    /**
-     * @var string
-     */
-    protected $deliveryDepartureCenterPEX;
+    protected string $arrivalCenterPEX = '';
 
-    /**
-     * @var \Datetime
-     */
-    protected $deliveryDate;
+    protected ?Datetime $deliveryDepartureDate = null;
 
-    public function init()
+    protected string $deliveryDepartureCenter = '';
+
+    protected string $deliveryDepartureCenterPEX = '';
+
+    protected ?DateTime $deliveryDate = null;
+
+    protected string $shortStatus = '';
+
+    protected string $primaryPODUrl = '';
+
+    protected string $secondaryPODUrl = '';
+
+    public function init() : void
     {
-        foreach (array('requestDate', 'processDate', 'arrivalDate', 'deliveryDepartureDate', 'deliveryDate') as $attr) {
-            $this->$attr = $this->$attr ? new \Datetime($this->$attr) : null;
+        foreach (['requestDate', 'processDate', 'arrivalDate', 'deliveryDepartureDate', 'deliveryDate'] as $attr)
+        {
+            $this->$attr = $this->$attr ? new Datetime($this->$attr) : null;
         }
     }
 
     /**
-     * Return the last not null event
-     * 
-     * @return string
+     * Return the last non-null event.
      */
-    public function getLastEvent()
+    public function getLastEvent() : string
     {
         if (null === $this->{self::$sequence[0]}) {
             return self::$sequence[0];
@@ -103,19 +78,12 @@ class Events
         return self::$sequence[count(self::$sequence)-1];
     }
 
-    /**
-     * @param  string $event
-     * @return bool
-     */
-    public function isEventDone($event)
+    public function isEventDone(string $event) : bool
     {
         return (isset($this->$event) && null !== $this->$event);
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestDate()
+    public function getRequestDate() : ?DateTime
     {
         return $this->requestDate;
     }
@@ -123,16 +91,13 @@ class Events
     /**
      * @return $this
      */
-    public function setRequestDate($requestDate)
+    public function setRequestDate(?DateTime $requestDate) : static
     {
         $this->requestDate = $requestDate;
         return $this;
     }
-    
-    /**
-     * @return string
-     */
-    public function getProcessDate()
+
+    public function getProcessDate() : ?DateTime
     {
         return $this->processDate;
     }
@@ -140,16 +105,13 @@ class Events
     /**
      * @return $this
      */
-    public function setProcessDate($processDate)
+    public function setProcessDate(?DateTime $processDate) : static
     {
         $this->processDate = $processDate;
         return $this;
     }
-    
-    /**
-     * @return string|null
-     */
-    public function getProcessCenter()
+
+    public function getProcessCenter() : string
     {
         return $this->processCenter;
     }
@@ -157,16 +119,13 @@ class Events
     /**
      * @return $this
      */
-    public function setProcessCenter($processCenter)
+    public function setProcessCenter(string $processCenter) : static
     {
         $this->processCenter = $processCenter;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProcessCenterPEX()
+    public function getProcessCenterPEX() : string
     {
         return $this->processCenterPEX;
     }
@@ -174,16 +133,13 @@ class Events
     /**
      * @return $this
      */
-    public function setProcessCenterPEX(Sender $processCenterPEX)
+    public function setProcessCenterPEX(string $processCenterPEX) : static
     {
         $this->processCenterPEX = $processCenterPEX;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getArrivalDate()
+    public function getArrivalDate() : ?DateTime
     {
         return $this->arrivalDate;
     }
@@ -191,16 +147,13 @@ class Events
     /**
      * @return $this
      */
-    public function setArrivalDate(Receiver $arrivalDate)
+    public function setArrivalDate(?DateTime $arrivalDate) : static
     {
         $this->arrivalDate = $arrivalDate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getArrivalCenter()
+    public function getArrivalCenter() : string
     {
         return $this->arrivalCenter;
     }
@@ -208,16 +161,13 @@ class Events
     /**
      * @return $this
      */
-    public function setArrivalCenter($arrivalCenter)
+    public function setArrivalCenter(string $arrivalCenter) : static
     {
         $this->arrivalCenter = $arrivalCenter;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getArrivalCenterPEX()
+    public function getArrivalCenterPEX() : string
     {
         return $this->arrivalCenterPEX;
     }
@@ -225,16 +175,13 @@ class Events
     /**
      * @return $this
      */
-    public function setArrivalCenterPEX($arrivalCenterPEX)
+    public function setArrivalCenterPEX(string $arrivalCenterPEX) : static
     {
         $this->arrivalCenterPEX = $arrivalCenterPEX;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDeliveryDepartureDate()
+    public function getDeliveryDepartureDate() : ?DateTime
     {
         return $this->deliveryDepartureDate;
     }
@@ -242,16 +189,13 @@ class Events
     /**
      * @return $this
      */
-    public function setDeliveryDepartureDate($deliveryDepartureDate)
+    public function setDeliveryDepartureDate(?DateTime $deliveryDepartureDate) : static
     {
         $this->deliveryDepartureDate = $deliveryDepartureDate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDeliveryDepartureCenter()
+    public function getDeliveryDepartureCenter() : string
     {
         return $this->deliveryDepartureCenter;
     }
@@ -259,16 +203,13 @@ class Events
     /**
      * @return $this
      */
-    public function setDeliveryDepartureCenter($deliveryDepartureCenter)
+    public function setDeliveryDepartureCenter(string $deliveryDepartureCenter) : static
     {
         $this->deliveryDepartureCenter = $deliveryDepartureCenter;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDeliveryDepartureCenterPEX()
+    public function getDeliveryDepartureCenterPEX() : string
     {
         return $this->deliveryDepartureCenterPEX;
     }
@@ -276,16 +217,13 @@ class Events
     /**
      * @return $this
      */
-    public function setDeliveryDepartureCenterPEX($deliveryDepartureCenterPEX)
+    public function setDeliveryDepartureCenterPEX(string $deliveryDepartureCenterPEX) : static
     {
         $this->deliveryDepartureCenterPEX = $deliveryDepartureCenterPEX;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getShortStatus()
+    public function getShortStatus() : string
     {
         return $this->shortStatus;
     }
@@ -293,16 +231,13 @@ class Events
     /**
      * @return $this
      */
-    public function setShortStatus($shortStatus)
+    public function setShortStatus(string $shortStatus) : static
     {
         $this->shortStatus = $shortStatus;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDeliveryDate()
+    public function getDeliveryDate() : ?DateTime
     {
         return $this->deliveryDate;
     }
@@ -310,16 +245,13 @@ class Events
     /**
      * @return $this
      */
-    public function setDeliveryDate($deliveryDate)
+    public function setDeliveryDate(?DateTime $deliveryDate) : static
     {
         $this->deliveryDate = $deliveryDate;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPrimaryPODUrl()
+    public function getPrimaryPODUrl() : string
     {
         return $this->primaryPODUrl;
     }
@@ -327,16 +259,13 @@ class Events
     /**
      * @return $this
      */
-    public function setPrimaryPODUrl($primaryPODUrl)
+    public function setPrimaryPODUrl(string $primaryPODUrl) : static
     {
         $this->primaryPODUrl = $primaryPODUrl;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecondaryPODUrl()
+    public function getSecondaryPODUrl() : string
     {
         return $this->secondaryPODUrl;
     }
@@ -344,7 +273,7 @@ class Events
     /**
      * @return $this
      */
-    public function setSecondaryPODUrl($secondaryPODUrl)
+    public function setSecondaryPODUrl(string $secondaryPODUrl) : static
     {
         $this->secondaryPODUrl = $secondaryPODUrl;
         return $this;

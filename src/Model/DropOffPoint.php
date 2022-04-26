@@ -13,25 +13,25 @@ namespace TNTExpress\Model;
 
 class DropOffPoint extends FullAddressPlusInfo
 {
-    protected $latitude;
-    protected $longitude;
-    protected $xETTCode;
+    protected string $latitude = '';
+    protected string $longitude = '';
+    protected string $xETTCode = '';
 
-    public function init()
+    public function init() : void
     {
     }
 
-    public function getLatitude()
+    public function getLatitude() : string
     {
         return $this->latitude;
     }
 
-    public function getLongitude()
+    public function getLongitude() : string
     {
         return $this->longitude;
     }
 
-    public function getXETTCode()
+    public function getXETTCode() : string
     {
         return $this->xETTCode;
     }

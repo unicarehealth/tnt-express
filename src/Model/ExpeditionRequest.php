@@ -11,74 +11,58 @@
 
 namespace TNTExpress\Model;
 
+use Datetime;
+
 class ExpeditionRequest
 {
-    /**
-     * @var PickUpRequest
-     */
-    protected $pickUpRequest;
+    protected ?PickUpRequest $pickUpRequest = null;
 
-    /**
-     * @var \Datetime
-     */
-    protected $shippingDate;
+    protected ?Datetime $shippingDate = null;
 
-    /**
-     * @var int
-     */
-    protected $accountNumber;
+    /** @var numeric-string */
+    protected string $accountNumber = '0';
 
-    /**
-     * @var Sender
-     */
-    protected $sender;
+    protected ?Sender $sender = null;
 
-    /**
-     * @var Receiver
-     */
-    protected $receiver;
+    protected ?Receiver $receiver = null;
 
-    /**
-     * @var string
-     */
-    protected $serviceCode;
+    protected string $serviceCode = '';
 
-    /**
-     * @var int
-     */
-    protected $quantity = 1;
+    protected int $quantity = 1;
 
     /**
      * @var ParcelRequest[]
      */
-    protected $parcelsRequest;
+    protected array $parcelRequests = [];
+
+    protected bool $saturdayDelivery = false;
 
     /**
-     * @var bool
+     * @var string[]
      */
-    protected $saturdayDelivery;
+    protected array $paybackInfo = [];
+
+    protected string $labelFormat = 'STDA4';
 
     /**
-     * @var array
+     * @return array<string, string>
      */
-    protected $paybackInfo;
-
-    /**
-     * @var string
-     */
-    protected $labelFormat = 'STDA4';
-
-    public function toArray($filterNulls = false)
+    public function toArray(bool $filterNulls = false) : array
     {
         $ro = new \ReflectionObject($this);
-        $array = array();
+        $array = [];
 
-        foreach ($ro->getProperties() as $property) {
-            $value = call_user_func(array($this, 'get'.ucfirst($property->getName())));
+        foreach ($ro->getProperties() as $property)
+        {
+            $propertyFunctionName = 'get' . ucfirst($property->getName());
+            $value = $this->$propertyFunctionName();
 
-            if ($value instanceof \Datetime) {
+            if ($value instanceof Datetime)
+            {
                 $array[$property->getName()] = $value->format('Y-m-d');
-            } elseif (!$filterNulls || null !== $value) {
+            }
+            elseif (!$filterNulls || null !== $value)
+            {
                 $array[$property->getName()] = $value;
             }
         }
@@ -86,134 +70,169 @@ class ExpeditionRequest
         return $array;
     }
 
-    public function setShippingDate(\Datetime $shippingDate)
+    /**
+     * @return $this
+     */
+    public function setShippingDate(Datetime $shippingDate) : static
     {
         $this->shippingDate = $shippingDate;
-
         return $this;
     }
 
-    public function getShippingDate()
+    public function getShippingDate() : ?DateTime
     {
         return $this->shippingDate;
     }
 
-    public function setAccountNumber($accountNumber)
+    /**
+     * @param numeric-string $accountNumber
+     * @return $this
+     */
+    public function setAccountNumber(string $accountNumber) : static
     {
         $this->accountNumber = $accountNumber;
-
         return $this;
     }
 
-    public function getAccountNumber()
+    /**
+     * @return numeric-string
+     */
+    public function getAccountNumber() : string
     {
         return $this->accountNumber;
     }
 
-    public function setPickupRequest($pickupRequest = null)
+    /**
+     * @return $this
+     */
+    public function setPickupRequest(?PickUpRequest $pickupRequest) : static
     {
         $this->pickUpRequest = $pickupRequest;
-
         return $this;
     }
 
-    public function getPickupRequest()
+    public function getPickupRequest() : ?PickUpRequest
     {
         return $this->pickUpRequest;
     }
 
-    public function setSender($sender)
+    /**
+     * @return $this
+     */
+    public function setSender(?Sender $sender) : static
     {
         $this->sender = $sender;
-
         return $this;
     }
 
-    public function getSender()
+    public function getSender() : ?Sender
     {
         return $this->sender;
     }
 
-    public function setReceiver($receiver)
+    /**
+     * @return $this
+     */
+    public function setReceiver(?Receiver $receiver) : static
     {
         $this->receiver = $receiver;
-
         return $this;
     }
 
-    public function getReceiver()
+    public function getReceiver() : ?Receiver
     {
         return $this->receiver;
     }
 
-    public function setServiceCode($serviceCode)
+    /**
+     * @return $this
+     */
+    public function setServiceCode(string $serviceCode) : static
     {
         $this->serviceCode = $serviceCode;
-
         return $this;
     }
 
-    public function getServiceCode()
+    public function getServiceCode() : string
     {
         return $this->serviceCode;
     }
 
-    public function setQuantity($quantity)
+    /**
+     * @return $this
+     */
+    public function setQuantity(int $quantity) : static
     {
         $this->quantity = $quantity;
-
         return $this;
     }
 
-    public function getQuantity()
+    public function getQuantity() : int
     {
         return $this->quantity;
     }
 
-    public function setParcelsRequest($parcelsRequest)
+    /**
+     * @param ParcelRequest[] $parcelRequests
+     * @return $this
+     */
+    public function setParcelRequests(array $parcelRequests) : static
     {
-        $this->parcelsRequest = $parcelsRequest;
-
+        $this->parcelRequests = $parcelRequests;
         return $this;
     }
 
-    public function getParcelsRequest()
+    /**
+     * @return ParcelRequest[]
+     */
+    public function getParcelRequests() : array
     {
-        return $this->parcelsRequest;
+        return $this->parcelRequests;
     }
 
-    public function setSaturdayDelivery($saturdayDelivery)
+    /**
+     * @return $this
+     */
+    public function setSaturdayDelivery(bool $saturdayDelivery) : static
     {
         $this->saturdayDelivery = $saturdayDelivery;
 
         return $this;
     }
 
-    public function getSaturdayDelivery()
+    public function getSaturdayDelivery() : bool
     {
         return $this->saturdayDelivery;
     }
 
-    public function setPaybackInfo($paybackInfo)
+    /**
+     * @param string[] $paybackInfo
+     * @return $this
+     */
+    public function setPaybackInfo(array $paybackInfo) : static
     {
         $this->paybackInfo = $paybackInfo;
-
         return $this;
     }
 
-    public function getPaybackInfo()
+    /**
+     * @return string[]
+     */
+    public function getPaybackInfo() : array
     {
         return $this->paybackInfo;
     }
 
-    public function setLabelFormat($labelFormat)
+    /**
+     * @return $this
+     */
+    public function setLabelFormat(string $labelFormat) : static
     {
         $this->labelFormat = $labelFormat;
-
         return $this;
     }
 
-    public function getLabelFormat()
+    public function getLabelFormat() : string
     {
         return $this->labelFormat;
     }

@@ -15,31 +15,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class Expedition
 {
-    /**
-     * @var ArrayCollection
-     */
-    protected $parcelResponses;
+    /** @var ArrayCollection<int, ParcelResponse> */
+    protected ArrayCollection $parcelResponses;
 
-    /**
-     * @var string
-     */
+    /** @var string|resource */
     protected $PDFLabels;
 
-    /**
-     * @var string
-     */
-    protected $pickUpNumber;
+    protected string $pickUpNumber;
 
     public function __construct()
     {
         $this->parcelResponses = new ArrayCollection();
+        $this->PDFLabels = '';
+        $this->pickUpNumber = '';
     }
 
-    public function init()
+    public function init() : void
     {
         if (!$this->parcelResponses instanceof ArrayCollection) {
             $this->setParcelResponses(new ArrayCollection(
-                is_array($this->parcelResponses) ? $this->parcelResponses : array($this->parcelResponses)
+                is_array($this->parcelResponses) ? $this->parcelResponses : [$this->parcelResponses]
             ));
         }
 
@@ -49,18 +44,14 @@ class Expedition
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection<int, ParcelResponse>
      */
-    public function getParcelResponses()
+    public function getParcelResponses() : ArrayCollection
     {
         return $this->parcelResponses;
     }
 
-    /**
-     * @param int             $index
-     * @return ParcelResponse
-     */
-    public function getParcelResponse($index = 0)
+    public function getParcelResponse(int $index = 0) : ParcelResponse
     {
         return $this->parcelResponses[$index];
     }
@@ -68,7 +59,7 @@ class Expedition
     /**
      * @return $this
      */
-    public function addParcelResponse(ParcelResponse $parcelResponse)
+    public function addParcelResponse(ParcelResponse $parcelResponse) : static
     {
         $this->parcelResponses[] = $parcelResponse;
 
@@ -78,7 +69,7 @@ class Expedition
     /**
      * @return $this
      */
-    public function removeParcelResponse(ParcelResponse $parcelResponse)
+    public function removeParcelResponse(ParcelResponse $parcelResponse) : static
     {
         if ($this->parcelResponses->contains($parcelResponse)) {
             $this->parcelResponses->removeElement($parcelResponse);
@@ -88,10 +79,10 @@ class Expedition
     }
 
     /**
-     * @param ArrayCollection $parcelResponses
+     * @param ArrayCollection<int, ParcelResponse> $parcelResponses
      * @return $this
      */
-    public function setParcelResponses(ArrayCollection $parcelResponses)
+    public function setParcelResponses(ArrayCollection $parcelResponses) : static
     {
         $this->parcelResponses = new ArrayCollection();
 
@@ -101,28 +92,23 @@ class Expedition
 
         return $this;
     }
-    
-    /**
-     * @return string|null
-     */
-    public function getPDFLabels()
+
+    public function getPDFLabels(): string
     {
-        return is_resource($this->PDFLabels) ? stream_get_contents($this->PDFLabels) : $this->PDFLabels;
+        return is_resource($this->PDFLabels) ? (string)stream_get_contents($this->PDFLabels) : $this->PDFLabels;
     }
 
     /**
+     * @param string|resource $PDFLabels
      * @return $this
      */
-    public function setPDFLabels($PDFLabels)
+    public function setPDFLabels($PDFLabels): static
     {
         $this->PDFLabels = $PDFLabels;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPickUpNumber()
+    public function getPickUpNumber() : string
     {
         return $this->pickUpNumber;
     }
@@ -130,7 +116,7 @@ class Expedition
     /**
      * @return $this
      */
-    public function setPickUpNumber($pickUpNumber)
+    public function setPickUpNumber(string $pickUpNumber) : static
     {
         $this->pickUpNumber = $pickUpNumber;
         return $this;

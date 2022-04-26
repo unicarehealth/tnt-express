@@ -13,9 +13,9 @@ namespace TNTExpress\Exception;
 
 class MissingFieldException extends ClientException
 {
-    CONST MESSAGE = "The field '%s' is mandatory.";
+    public final const MESSAGE = "The field '%s' is mandatory.";
 
-    public function __construct($field)
+    public function __construct(string $field)
     {
         parent::__construct(sprintf(self::MESSAGE, $field));
     }

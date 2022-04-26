@@ -17,58 +17,44 @@ use TNTExpress\Model\DropOffPoint;
 use TNTExpress\Model\Expedition;
 use TNTExpress\Model\ExpeditionRequest;
 use TNTExpress\Model\Service;
+use Closure;
 
 interface TNTClientInterface
 {
     /**
      * Return the list of drop off points matching the zip code
      *
-     * @param string      $zipCode
-     * @param string|null $city
-     *
      * @return DropOffPoint[]
      * @throws ClientException
      */
-    public function getDropOffPoints($zipCode, $city);
+    public function getDropOffPoints(string $zipCode, string $city = '') : array;
 
     /**
      * Return the matching city from the given zip code
      *
-     * @param string $zipCode
-     *
      * @return City[]
      * @throws ClientException
      */
-    public function getCitiesGuide($zipCode);
+    public function getCitiesGuide(string $zipCode) : array;
 
     /**
      * Return a list of possible services for an expedition
      *
-     * @param ExpeditionRequest $expeditionRequest
-     * @param closure|null      $filter
-     *
      * @return Service[]
      * @throws ClientException
      */
-    public function getFeasibility(ExpeditionRequest $expeditionRequest, $filter = null);
+    public function getFeasibility(ExpeditionRequest $expeditionRequest, ?Closure $filter = null) : array;
 
     /**
      * Create an expedition with the given parameters
      *
-     * @param ExpeditionRequest $expeditionRequest
-     *
-     * @return Expedition
      * @throws ClientException
      */
-    public function createExpedition(ExpeditionRequest $expeditionRequest);
+    public function createExpedition(ExpeditionRequest $expeditionRequest) : Expedition;
 
     /**
      * Get the status of a parcel given its number
      *
-     * @param string $trackingNumber
-     *
-     * @return mixed
-     *
      */
-    public function getTrackingByConsignment($trackingNumber);
+    public function getTrackingByConsignment(string $trackingNumber) : mixed;
 }

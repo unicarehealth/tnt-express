@@ -21,10 +21,13 @@ $soapClient = $builder->createClient(true);
 
 $TNTClient = new TNTClient($soapClient, new ExceptionManager());
 
-try {
+try
+{
     $points = $TNTClient->getDropOffPoints('76130', 'Mont St Aignan');
 
     var_dump($points);
-} catch (ClientException $e) {
+}
+catch (ClientException $e)
+{
     var_dump($e->getMessage());
 }

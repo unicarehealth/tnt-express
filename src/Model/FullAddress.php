@@ -13,46 +13,28 @@ namespace TNTExpress\Model;
 
 class FullAddress extends Address
 {
-    /**
-     * @var string
-     */
-    protected $country;
+    protected string $country = '';
 
-    /**
-     * @var string
-     */
-    protected $department;
+    protected string $department = '';
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name = '';
 
-    public function init()
+    public function init() : void
     {
         parent::init();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCountry()
+    public function getCountry() : string
     {
         return $this->country;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDepartment()
+    public function getDepartment() : string
     {
         return $this->department;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }

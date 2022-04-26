@@ -13,52 +13,28 @@ namespace TNTExpress\Model;
 
 class Service
 {
-    /**
-     * @var string
-     */
-    protected $dueDate;
+    protected string $dueDate = '';
 
-    /**
-     * @var string
-     */
-    protected $serviceCode;
+    protected string $serviceCode = '';
 
-    /**
-     * @var string
-     */
-    protected $serviceLabel;
+    protected string $serviceLabel = '';
 
-    /**
-     * @var bool
-     */
-    protected $saturdayDelivery;
+    protected bool $saturdayDelivery = false;
 
-    /**
-     * @var bool
-     */
-    protected $priorityGuarantee;
+    protected bool $priorityGuarantee = false;
 
-    /**
-     * @var bool
-     */
-    protected $insurance;
+    protected bool $insurance = false;
 
-    /**
-     * @var bool
-     */
-    protected $afternoonDelivery;
+    protected bool $afternoonDelivery = false;
 
-    public function init()
+    public function init() : void
     {
-        foreach (array('saturdayDelivery', 'priorityGuarantee', 'insurance', 'afternoonDelivery') as $key) {
-            $this->$key = (bool) $key;
+        foreach (['saturdayDelivery', 'priorityGuarantee', 'insurance', 'afternoonDelivery'] as $key) {
+            $this->$key = (bool)$key;
         }
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDueDate()
+    public function getDueDate() : string
     {
         return $this->dueDate;
     }
@@ -66,16 +42,13 @@ class Service
     /**
      * @return $this
      */
-    public function setDueDate($dueDate)
+    public function setDueDate(string $dueDate) : static
     {
         $this->dueDate = $dueDate;
         return $this;
     }
-    
-    /**
-     * @return string|null
-     */
-    public function getServiceCode($nbChar = null)
+
+    public function getServiceCode(?int $nbChar = null) : string
     {
         if (null !== $nbChar) {
             return substr($this->serviceCode, 0, $nbChar);
@@ -87,16 +60,13 @@ class Service
     /**
      * @return $this
      */
-    public function setServiceCode($serviceCode)
+    public function setServiceCode(string $serviceCode) : static
     {
         $this->serviceCode = $serviceCode;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getServiceLabel()
+    public function getServiceLabel() : string
     {
         return $this->serviceLabel;
     }
@@ -104,16 +74,13 @@ class Service
     /**
      * @return $this
      */
-    public function setServiceLabel($serviceLabel)
+    public function setServiceLabel(string $serviceLabel) : static
     {
         $this->serviceLabel = $serviceLabel;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isSaturdayDelivery()
+    public function isSaturdayDelivery() : bool
     {
         return $this->saturdayDelivery;
     }
@@ -121,16 +88,13 @@ class Service
     /**
      * @return $this
      */
-    public function setSaturdayDelivery($saturdayDelivery)
+    public function setSaturdayDelivery(bool $saturdayDelivery) : static
     {
         $this->saturdayDelivery = (bool) $saturdayDelivery;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isPriorityGuarantee()
+    public function isPriorityGuarantee() : bool
     {
         return $this->priorityGuarantee;
     }
@@ -138,16 +102,13 @@ class Service
     /**
      * @return $this
      */
-    public function setPriorityGuarantee($priorityGuarantee)
+    public function setPriorityGuarantee(bool $priorityGuarantee) : static
     {
-        $this->priorityGuarantee = (bool) $priorityGuarantee;
+        $this->priorityGuarantee = $priorityGuarantee;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isInsurance()
+    public function isInsurance() : bool
     {
         return $this->insurance;
     }
@@ -155,16 +116,13 @@ class Service
     /**
      * @return $this
      */
-    public function setInsurance($insurance)
+    public function setInsurance(bool $insurance) : static
     {
         $this->insurance = (bool) $insurance;
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function isAfternoonDelivery()
+    public function isAfternoonDelivery() : bool
     {
         return $this->afternoonDelivery;
     }
@@ -172,9 +130,9 @@ class Service
     /**
      * @return $this
      */
-    public function setAfternoonDelivery($afternoonDelivery)
+    public function setAfternoonDelivery(bool $afternoonDelivery) : static
     {
-        $this->afternoonDelivery = (bool) $afternoonDelivery;
+        $this->afternoonDelivery = $afternoonDelivery;
         return $this;
     }
 }

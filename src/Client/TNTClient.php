@@ -11,39 +11,31 @@
 
 namespace TNTExpress\Client;
 
-use TNTExpress\Exception\ClientException;
-use TNTExpress\Exception\ExceptionManagerInterface;
-use TNTExpress\Exception\InvalidPairZipcodeCityException;
-use TNTExpress\Exception\MissingFieldException;
-use TNTExpress\Exception\NoServiceAvailableException;
-use TNTExpress\Exception\ParcelNotFoundException;
-use TNTExpress\Model\DropOffPoint;
-use TNTExpress\Model\City;
-use TNTExpress\Model\ExpeditionRequest;
-
+use TNTExpress\Exception\{ ClientException, ExceptionManagerInterface, InvalidPairZipcodeCityException, MissingFieldException, NoServiceAvailableException, ParcelNotFoundException };
+use TNTExpress\Model\{ DropOffPoint, City, ExpeditionRequest, Expedition };
+use SoapClient;
+use SoapFault;
+use Closure;
 class TNTClient implements TNTClientInterface
 {
-    /**
-     * @var \SoapClient
-     */
-    protected $client;
+    protected readonly SoapClient $client;
 
-    /**
-     * @var ExceptionManagerInterface
-     */
-    protected $manager;
+    protected readonly ExceptionManagerInterface $manager;
 
-    public function __construct(\SoapClient $client, ExceptionManagerInterface $manager)
+    public function __construct(SoapClient $client, ExceptionManagerInterface $manager)
     {
         $this->client  = $client;
         $this->manager = $manager;
     }
 
-    public function checkZipcodeCityMatch($zipCode, $city)
+    public function checkZipcodeCityMatch(string $zipCode, string $city = '') : bool
     {
-        try {
+        try
+        {
             $this->getDropOffPoints($zipCode, $city);
-        } catch (ClientException $e) {
+        }
+        catch (ClientException $e)
+        {
             return false;
         }
 
@@ -53,23 +45,31 @@ class TNTClient implements TNTClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getDropOffPoints($zipCode, $city = null)
+    public function getDropOffPoints(string $zipCode, string $city = '') : array
     {
-        if (null === $city) {
-            $city = current($this->getCitiesGuide($zipCode))->getName();
+        if ('' === $city)
+        {
+            /** @var \TNTExpress\Model\City */
+            $cityElement = current($this->getCitiesGuide($zipCode));
+            $city = $cityElement->getName();
         }
 
-        try {
-            $dropOffPoints = $this->client->dropOffPoints(array('zipCode' => $zipCode, 'city' => $city));
-        } catch (\SoapFault $e) {
+        try
+        {
+            $dropOffPoints = $this->client->dropOffPoints(['zipCode' => $zipCode, 'city' => $city]);
+        }
+        catch (SoapFault $e)
+        {
             $this->manager->handle($e);
         }
 
-        if (!isset($dropOffPoints->DropOffPoint)) {
+        if (!isset($dropOffPoints->DropOffPoint))
+        {
             throw new InvalidPairZipcodeCityException($zipCode, $city);
         }
 
-        foreach ($dropOffPoints->DropOffPoint as $point) {
+        foreach ($dropOffPoints->DropOffPoint as $point)
+        {
             $point->init();
         }
 
@@ -79,25 +79,31 @@ class TNTClient implements TNTClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getCitiesGuide($zipCode)
+    public function getCitiesGuide(string $zipCode) : array
     {
-        try {
-            $cities = $this->client->CitiesGuide(array('zipCode' => $zipCode));
-        } catch (\SoapFault $e) {
+        try
+        {
+            $cities = $this->client->CitiesGuide(['zipCode' => $zipCode]);
+        }
+        catch (SoapFault $e)
+        {
             $this->manager->handle($e);
         }
 
-        if (!isset($cities->City)) {
+        if (!isset($cities->City))
+        {
             throw new ClientException(sprintf('Zip code "%s" does not match any city.', $zipCode));
         }
 
         $cities = $cities->City;
 
-        if (!is_array($cities)) {
-            $cities = array($cities);
+        if (!is_array($cities))
+        {
+            $cities = [$cities];
         }
 
-        foreach ($cities as $city) {
+        foreach ($cities as $city)
+        {
             $city->init();
         }
 
@@ -107,13 +113,13 @@ class TNTClient implements TNTClientInterface
     /**
      * {@inheritdoc}
      */
-    public function createExpedition(ExpeditionRequest $expeditionRequest)
+    public function createExpedition(ExpeditionRequest $expeditionRequest) : Expedition
     {
-        $this->ensureParameters($expeditionRequest, array('shippingDate', 'accountNumber', 'sender', 'receiver', 'serviceCode', 'quantity', 'parcelsRequest', 'labelFormat'));
+        $this->ensureParameters($expeditionRequest, ['shippingDate', 'accountNumber', 'sender', 'receiver', 'serviceCode', 'quantity', 'parcelsRequest', 'labelFormat']);
 
         try {
-            $result = $this->client->expeditionCreation(array('parameters' => $expeditionRequest->toArray()));
-        } catch (\SoapFault $e) {
+            $result = $this->client->expeditionCreation(['parameters' => $expeditionRequest->toArray()]);
+        } catch (SoapFault $e) {
             $this->manager->handle($e);
         }
 
@@ -130,35 +136,43 @@ class TNTClient implements TNTClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getFeasibility(ExpeditionRequest $expeditionRequest, $filter = null)
+    public function getFeasibility(ExpeditionRequest $expeditionRequest, ?Closure $filter = null) : array
     {
-        $this->ensureParameters($expeditionRequest, array('shippingDate', 'accountNumber', 'sender', 'receiver'));
+        $this->ensureParameters($expeditionRequest, ['shippingDate', 'accountNumber', 'sender', 'receiver']);
 
-        try {
-            $result = $this->client->feasibility(array('parameters' => $expeditionRequest->toArray()));
-        } catch (\SoapFault $e) {
+        try
+        {
+            $result = $this->client->feasibility(['parameters' => $expeditionRequest->toArray()]);
+        }
+        catch (SoapFault $e)
+        {
             $this->manager->handle($e);
         }
 
-        if (!isset($result->Service)) {
+        if (!isset($result->Service))
+        {
             throw new NoServiceAvailableException();
         }
 
         $services = $result->Service;
 
-        if (!is_array($services)) {
-            $services = array($services);
+        if (!is_array($services))
+        {
+            $services = [$services];
         }
 
-        foreach ($services as $service) {
+        foreach ($services as $service)
+        {
             $service->init();
         }
 
-        if (is_callable($filter)) {
+        if (is_callable($filter))
+        {
             $services = array_values(array_filter($services, $filter));
         }
 
-        if (0 === count($services)) {
+        if (0 === count($services))
+        {
             throw new NoServiceAvailableException();
         }
 
@@ -168,15 +182,19 @@ class TNTClient implements TNTClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getTrackingByConsignment($trackingNumber)
+    public function getTrackingByConsignment(string $trackingNumber) : mixed
     {
-        try {
-            $result = $this->client->trackingByConsignment(array('parcelNumber' => $trackingNumber));
-        } catch (\SoapFault $e) {
+        try
+        {
+            $result = $this->client->trackingByConsignment(['parcelNumber' => $trackingNumber]);
+        }
+        catch (SoapFault $e)
+        {
             $this->manager->handle($e);
         }
 
-        if (!isset($result->Parcel)) {
+        if (!isset($result->Parcel))
+        {
             throw new ParcelNotFoundException($trackingNumber);
         }
 
@@ -187,16 +205,16 @@ class TNTClient implements TNTClientInterface
     }
 
     /**
-     * @param ExpeditionRequest $expeditionRequest
-     * @param array             $requiredParameters
+     * @param string[] $requiredParameters
      * @throws ClientException
      */
-    protected function ensureParameters(ExpeditionRequest $expeditionRequest, array $requiredParameters)
+    protected function ensureParameters(ExpeditionRequest $expeditionRequest, array $requiredParameters) : void
     {
         $diff = array_diff($requiredParameters, array_keys($expeditionRequest->toArray(true)));
 
-        if (0 < count($diff)) {
-            throw new MissingFieldException(implode($diff, ', '));
+        if (0 < count($diff))
+        {
+            throw new MissingFieldException(implode(', ', $diff));
         }
     }
 }

@@ -13,39 +13,21 @@ namespace TNTExpress\Model;
 
 class Address
 {
-    /**
-     * @var int
-     */
-    protected $id;
+    protected int $id = 0;
 
-    /**
-     * @var string
-     */
-    protected $address1;
+    protected string $address1 = '';
     
-    /**
-     * @var string
-     */
-    protected $address2;
+    protected string $address2 = '';
     
-    /**
-     * @var string
-     */
-    protected $city;
+    protected string $city = '';
     
-    /**
-     * @var string
-     */
-    protected $zipCode;
+    protected string $zipCode = '';
 
-    public function init()
+    public function init() : void
     {
     }
     
-    /**
-     * @return string|null
-     */
-    public function getAddress1()
+    public function getAddress1() : string
     {
         return $this->address1;
     }
@@ -53,16 +35,13 @@ class Address
     /**
      * @return $this
      */
-    public function setAddress1($address1)
+    public function setAddress1(string $address1) : static
     {
         $this->address1 = $address1;
         return $this;
     }
     
-    /**
-     * @return string|null
-     */
-    public function getAddress2()
+    public function getAddress2() : string
     {
         return $this->address2;
     }
@@ -70,16 +49,13 @@ class Address
     /**
      * @return $this
      */
-    public function setAddress2($address2)
+    public function setAddress2(string $address2) : static
     {
         $this->address2 = $address2;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCity()
+    public function getCity() : string 
     {
         return $this->city;
     }
@@ -87,16 +63,13 @@ class Address
     /**
      * @return $this
      */
-    public function setCity($city)
+    public function setCity(string $city) : static
     {
         $this->city = $city;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getZipCode()
+    public function getZipCode() : string
     {
         return $this->zipCode;
     }
@@ -104,7 +77,7 @@ class Address
     /**
      * @return $this
      */
-    public function setZipCode($zipCode)
+    public function setZipCode(string $zipCode) : static
     {
         $this->zipCode = $zipCode;
         return $this;

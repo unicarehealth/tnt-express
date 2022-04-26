@@ -13,9 +13,9 @@ namespace TNTExpress\Exception;
 
 class ParcelNotFoundException extends ClientException
 {
-    CONST MESSAGE = "Parcel number '%s' is not found.";
+    public final const MESSAGE = "Parcel number '%s' is not found.";
 
-    public function __construct($number)
+    public function __construct(string $number)
     {
         parent::__construct(sprintf(self::MESSAGE, $number));
     }
